@@ -11,3 +11,46 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
+export PATH=$PATH:~/.nodebrew/current/bin:~/.local/bin:/usr/local/opt/gettext/bin
+export LDFLAGS="-L/usr/local/opt/gettext/lib"
+export CPPFLAGS="-I/usr/local/opt/gettext/include"
+
+# settings for pyenv
+eval "$(pyenv init -)"
+
+# settings for goenv
+export GOENV_ROOT="$HOME/.goenv"
+export PATH="$GOENV_ROOT/bin:$PATH"
+eval "$(goenv init -)"
+
+if [ $commands[kubectl] ]; then
+  source <(kubectl completion zsh)
+fi
+
+function awsp() {
+  if [ $# -ge 1 ]; then
+    export AWS_PROFILE="$1"
+    echo "Set AWS_PROFILE=$AWS_PROFILE."
+  else
+    source _awsp
+  fi
+  export AWS_DEFAULT_PROFILE=$AWS_PROFILE
+}
+export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
+
+export NOMAD_ADDR=http://192.168.1.50:4646
+
+export CONSUL_HTTP_ADDR=http://192.168.1.50:8500
+
+export VAULT_TOKEN=s.L5ETkfwCtoi1GTIZnsKTDp5B
+export VAULT_ADDR=http://192.168.1.50:8200
+export VAULT_SKIP_VERIFY=true
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C vault vault
+complete -o nospace -C nomad nomad
+complete -o nospace -C consul consul
+
+export JAVA_HOME=`/usr/libexec/java_home -v 18`
+
+
